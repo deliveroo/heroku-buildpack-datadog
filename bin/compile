@@ -20,6 +20,8 @@ APT_CACHE_DIR="$CACHE_DIR/apt/cache"
 APT_STATE_DIR="$CACHE_DIR/apt/state"
 APT_REPO_FILE="$BUILDPACK_DIR/etc/datadog.list"
 
+# Checks settings
+CHECKS_DIR="$BUILDPACK_DIR/checks"
 
 GPG_HOME_DIR="$BUILD_DIR/.gnupg"
 GPG_KEYRING_FILE="$BUILD_DIR/.apt/trusted.gpg"
@@ -61,6 +63,7 @@ for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
 done
 
 mv $DD_AGENT_ROOT/etc/dd-agent/datadog.conf.example $DD_AGENT_CONF
+mv $CHECKS_DIR/twemproxy.py $APT_BUILD_DIR/opt/datadog-agent/agent/checks.d/twemproxy.py
 
 # Turn off syslog
 sed -i -e"s/^.*log_to_syslog:.*$/log_to_syslog: no/" $DD_AGENT_CONF
