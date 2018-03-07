@@ -100,7 +100,7 @@ class Twemproxy(AgentCheck):
         if 'host' not in instance:
             raise Exception('Twemproxy instance missing "host" value.')
         tags = instance.get('tags', [])
-        tags.push('dyno:{}'.format(os.getenv('DYNO', 'unknown-dyno')))
+        tags.append('dyno:{}'.format(os.getenv('DYNO', 'unknown-dyno')))
 
         response = self._get_data(instance)
         self.log.debug(u"Twemproxy `response`: {0}".format(response))
