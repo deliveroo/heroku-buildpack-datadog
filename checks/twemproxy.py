@@ -4,6 +4,7 @@
 
 # stdlib
 import socket
+import os
 
 # 3rd party
 import simplejson as json
@@ -99,7 +100,6 @@ class Twemproxy(AgentCheck):
         if 'host' not in instance:
             raise Exception('Twemproxy instance missing "host" value.')
         tags = instance.get('tags', [])
-
         response = self._get_data(instance)
         self.log.debug(u"Twemproxy `response`: {0}".format(response))
 
@@ -124,8 +124,9 @@ class Twemproxy(AgentCheck):
     def _get_data(self, instance):
         host = instance.get('host')
         port = int(instance.get('port', 2222)) # 2222 is default
+        dyno = os.getenv('DYNO', 'unknown-dyno')
 
-        service_check_tags = ['host:{}'.format(host), 'port:{}'.format(port)]
+        service_check_tags = ['host:{}'.format(host), 'port:{}'.format(port), 'dyno:{}'.format(dyno)]
 
         try:
             addrs = socket.getaddrinfo(host, port, 0, 0, socket.IPPROTO_TCP)
